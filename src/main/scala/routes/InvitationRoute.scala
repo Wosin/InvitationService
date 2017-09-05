@@ -1,12 +1,9 @@
 package routes
 
-import akka.http.scaladsl.model.StatusCodes
+import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
 import akka.http.scaladsl.server
 import akka.http.scaladsl.server.Directives._
 import model.Invitation
-import spray.json.pimpAny
-
-import scala.collection.mutable.ListBuffer
 
 trait InvitationRoute {
   var invitations = List[Invitation]()
@@ -18,6 +15,20 @@ trait InvitationRoute {
   path("invitation") {
     get {
       complete(StatusCodes.OK, invitations)
+    }~
+    post {
+      entity(as[Invitation]) { invitation =>
+        if(invitation.email.isEmpty || invitation.invitee.isEmpty) {
+          complete(StatusCodes.BadRequest, "Invitee or Email is empty!")
+        } else if(invitations.contains(invitation)) {
+          complete(StatusCodes.OK, "Invitation was already added!")
+        } else if(!invitation.email.matches("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}\\b")) {
+          complete(StatusCodes.BadRequest, "Email has improper format!")
+        } else {
+          invitations = invitations :+ invitation
+          complete(StatusCodes.OK, "Invitation added Succesfully")
+        }
+      }
     }
   }
 }
