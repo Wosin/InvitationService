@@ -26,8 +26,8 @@ object Boot extends InvitationRoute {
       }
 
 
-    val applicationPort:Int = if(userDefinedPort.isEmpty) defaultPort else userDefinedPort.get
-    val applicationHost:String = if(userDefinedHost.isEmpty) defaultHost else userDefinedHost.get
+    val applicationPort: Int = if(userDefinedPort.isEmpty) defaultPort else userDefinedPort.get
+    val applicationHost: String = if(userDefinedHost.isEmpty) defaultHost else userDefinedHost.get
     implicit val system: ActorSystem = ActorSystem("InvitationRestService")
     implicit val materializer: ActorMaterializer = ActorMaterializer()
     val binding = Http().bindAndHandle(invitationServiceRoute, applicationHost, applicationPort)
