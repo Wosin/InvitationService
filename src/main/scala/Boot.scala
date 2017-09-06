@@ -21,7 +21,7 @@ object Boot extends InvitationRoute {
         println(s"Using user defined port: ${args(1)}")
         userDefinedPort = Option(args(1).toInt)
       }
-      case _ => print("Using default host: localhost and port: 8080")
+      case _ => println("Using default host: localhost and port: 8080")
 
       }
 

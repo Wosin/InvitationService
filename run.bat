@@ -1,1 +1,1 @@
-scala InvitationService.jar
+scala InvitationService.jar %1 %2
